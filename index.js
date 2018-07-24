@@ -1,17 +1,33 @@
+import {verifyUserBody} from "middlewares/user";
+import {User} from "types/user";
 const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = process.env.PORT || 8888;
 
+// const INMEM_DB = {
+//     "admin":"admin",
+//     "member":"member"
+// };
+
 
 app.use(bodyParser.json());
 
 app.post("/login", (req, resp) => {
-    const user = req.body.username
+    let msg, status;
+    let user = User(resp);
+    let err = verifyUserBody(user);
+    if (err) {
+        status = 200;
+        msg = `You successfully logged in with ${user.username}`;
+    } else {
+        status = 404;
+        msg = "unauthorized";
+    }
     resp
-        .status(200)
-        .send(`You successfully logged in with ${user}`)
+        .status(status)
+        .send(msg);
 });
 
 app.get("/status", (_, resp) => {
@@ -22,7 +38,7 @@ app.get("/status", (_, resp) => {
 });
 
 app.get("*", (_, resp) => {
-   resp.send(404);
+    resp.send(404);
 });
 
 
