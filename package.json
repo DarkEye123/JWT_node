@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "babel": "^6.23.0",
     "body-parser": "^1.18.3",
     "eslint": "^5.2.0",
     "express": "^4.16.3"
@@ -21,5 +22,6 @@
   "bugs": {
     "url": "https://github.com/DarkEye123/JWT_node/issues"
   },
-  "homepage": "https://github.com/DarkEye123/JWT_node#readme"
+  "homepage": "https://github.com/DarkEye123/JWT_node#readme",
+  "build": "babel server --out-dir build --presets=es2015"
 }
