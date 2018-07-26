@@ -1,5 +1,5 @@
-import {verifyUserBody} from "middlewares/user";
-import {User} from "types/user";
+import {verifyUserBody} from "./middlewares/user";
+import {User} from "./types/user";
 const express = require("express");
 const bodyParser = require("body-parser");
 
