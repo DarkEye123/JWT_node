@@ -1,33 +1,35 @@
 import {verifyUserBody} from "./middlewares/user";
-import {User} from "./types/user";
+import {AuthUser} from "./db/in_mem";
 const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = process.env.PORT || 8888;
 
-// const INMEM_DB = {
-//     "admin":"admin",
-//     "member":"member"
-// };
-
-
 app.use(bodyParser.json());
 
-app.post("/login", (req, resp) => {
-    let msg, status;
-    let err = verifyUserBody(resp);
-    if (!err) {
-        let user = new User(resp);
-        status = 200;
-        msg = `You successfully logged in with ${user.username}`;
-    } else {
-        status = 404;
-        msg = "unauthorized";
+app.post("/login", (req, res) => {
+    let user;
+    try {
+        verifyUserBody(req);
     }
-    resp
-        .status(status)
-        .send(msg);
+    catch (e) {
+        res
+            .status(400)
+            .send(e.message);
+        return;
+    }
+    try {
+        user = AuthUser(req.body.username, req.body.password);
+    }
+    catch (e){
+        res
+            .sendStatus(401);
+        return;
+    }
+    res
+        .status(200)
+        .send(`You successfully logged in with ${user.username}`);
 });
 
 app.get("/status", (_, resp) => {
