@@ -1,12 +1,12 @@
 export function verifyUserBody(req) {
     let properties = [];
-    if (req.body === undefined) {
+    if (!req.body) {
         throw new Error("username and password are missing");
     }
-    if (!req.body.username || req.body.username === "") {
+    if (!req.body.username) {
         properties.push("username");
     }
-    if (!req.body.password || req.body.password === "") {
+    if (!req.body.password) {
         properties.push("password");
     }
     if (properties.length > 0) {
